@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Happy Birthday</title>
-  
+
   <!-- Google Fonts: Roboto -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  
+
   <!-- Highlight.js CSS: Atom One Light Theme -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-light.min.css">
-  
+
   <style>
     /* Reset default styles */
     * {
@@ -174,7 +174,7 @@
 
   <!-- Highlight.js JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-  
+
   <!-- Individual language support scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/scala.min.js"></script>
@@ -213,7 +213,7 @@
   println!("Happy birthday!");
 }`,
         "scala": `object Main extends App {
-  println("Happy Birthday!")
+  println("Happy birthday!")
 }`,
         "fsharp": `open System
 printfn "Happy birthday!"`,
@@ -279,7 +279,7 @@ namespace HappyBirthday
     }
   }
 }`,
-        "r": `cat("Happy Birthday!\\n")`,
+        "r": `cat("Happy birthday!\\n")`,
         "go": `package main
 import "fmt"
 func main() {
@@ -288,10 +288,10 @@ func main() {
         "cpp": `#include <iostream>
 using namespace std;
 int main() {
-  cout << "Happy Birthday!" << endl;
+  cout << "Happy birthday!" << endl;
   return 0;
 }`,
-        "lua": `print("Happy Birthday!")`,
+        "lua": `print("Happy birthday!")`,
         "sql": `INSERT INTO table_name (column1) VALUES ("Happy birthday");`,
         "clojure": `(println "Happy birthday!")`
       };
@@ -394,8 +394,7 @@ int main() {
           "csharp": "C#",
           "cpp": "C++",
           "fsharp": "F#",
-          "sql": "SQL",
-          "php": "PHP"
+          "sql": "SQL"
         };
         return languageNames[lang] || lang;
       }
