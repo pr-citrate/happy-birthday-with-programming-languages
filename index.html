@@ -39,20 +39,31 @@
       width: 100%;
       text-align: center;
       transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     /* Heading styles */
+    h1, h2 {
+      color: #333;
+      transition: color 0.3s ease;
+    }
+
     h1 {
       font-size: 3rem;
-      color: #333;
       margin-bottom: 30px;
-      transition: color 0.3s ease;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
     }
 
     /* Navigation buttons styles */
     .nav-buttons {
       margin-top: 30px;
-      display: flex;
+      display: none; /* Hidden initially */
       justify-content: center;
       gap: 20px;
     }
@@ -80,6 +91,31 @@
       box-shadow: 0 3px 10px rgba(0, 123, 255, 0.4);
     }
 
+    /* Start button styles */
+    #startButton {
+      padding: 12px 30px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      background-color: #28a745;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      margin-top: 20px; /* 추가 여백 */
+    }
+
+    #startButton:hover {
+      background-color: #1e7e34;
+      transform: translateY(-2px);
+    }
+
+    #startButton:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 10px rgba(40, 167, 69, 0.4);
+    }
+
     /* Code block styles */
     pre {
       text-align: left;
@@ -91,6 +127,7 @@
       opacity: 0;
       transform: translateY(20px);
       animation: fadeInUp 0.5s forwards;
+      width: 100%;
     }
 
     code {
@@ -118,7 +155,7 @@
         font-size: 2.5rem;
       }
 
-      .nav-buttons button {
+      .nav-buttons button, #startButton {
         width: 100%;
       }
     }
@@ -128,7 +165,8 @@
 
   <div class="container" id="contentContainer">
     <div id="content"></div>
-    <div class="nav-buttons" style="display:none;">
+    <button id="startButton">Start</button>
+    <div class="nav-buttons">
       <button id="prevButton">Previous</button>
       <button id="nextButton">Next</button>
     </div>
@@ -169,7 +207,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Code snippets for each language
+      // 코드 스니펫 정의
       const codeSnippets = {
         "rust": `fn main() {
   println!("Happy birthday!");
@@ -241,7 +279,7 @@ namespace HappyBirthday
     }
   }
 }`,
-        "r": `cat("Happy Birthday!\n")`,
+        "r": `cat("Happy Birthday!\\n")`,
         "go": `package main
 import "fmt"
 func main() {
@@ -259,65 +297,104 @@ int main() {
       };
 
       const languages = Object.keys(codeSnippets);
-      let currentIndex = 0;
+      let currentIndex = -1; // -1은 홈 화면을 나타냄
 
       const contentDiv = document.getElementById('content');
-      const nextButton = document.getElementById('nextButton');
-      const prevButton = document.getElementById('prevButton');
+      const startButton = document.getElementById('startButton');
       const navButtons = document.querySelector('.nav-buttons');
+      const prevButton = document.getElementById('prevButton');
+      const nextButton = document.getElementById('nextButton');
 
-      // Initial render
+      // 초기 화면 렌더링
       renderHome();
 
-      // Function to render the home screen
-      function renderHome() {
-        contentDiv.innerHTML = '<h1>Happy Birthday 🎉</h1>';
+      // Start 버튼 클릭 이벤트
+      startButton.addEventListener('click', () => {
+        startPresentation();
+      });
+
+      // Previous 버튼 클릭 이벤트
+      prevButton.addEventListener('click', () => {
+        navigatePrevious();
+      });
+
+      // Next 버튼 클릭 이벤트
+      nextButton.addEventListener('click', () => {
+        navigateNext();
+      });
+
+      // 키보드 이벤트 리스너
+      document.addEventListener('keydown', (event) => {
+        if (currentIndex === -1) { // 홈 화면일 때
+          if (event.key === 'ArrowRight') { // 오른쪽 화살표 키
+            startPresentation();
+          }
+        } else { // 코드 스니펫 화면일 때
+          if (event.key === 'ArrowLeft') { // 왼쪽 화살표 키
+            navigatePrevious();
+          } else if (event.key === 'ArrowRight') { // 오른쪽 화살표 키
+            navigateNext();
+          }
+        }
+      });
+
+      // 프레젠테이션 시작 함수
+      function startPresentation() {
+        startButton.style.display = 'none';
         navButtons.style.display = 'flex';
-        prevButton.style.display = 'none';
+        currentIndex = 0;
+        renderCode(currentIndex);
       }
 
-      // Function to render the code snippet
+      // 다음 코드 스니펫으로 이동 (순환)
+      function navigateNext() {
+        currentIndex++;
+        if (currentIndex >= languages.length) {
+          currentIndex = 0; // 첫 번째 코드 스니펫으로 순환
+        }
+        renderCode(currentIndex);
+      }
+
+      // 이전 코드 스니펫으로 이동 (순환)
+      function navigatePrevious() {
+        currentIndex--;
+        if (currentIndex < 0) {
+          currentIndex = languages.length - 1; // 마지막 코드 스니펫으로 순환
+        }
+        renderCode(currentIndex);
+      }
+
+      // 홈 화면 렌더링 함수
+      function renderHome() {
+        contentDiv.innerHTML = '<h1>Happy Birthday 🎉</h1>';
+        navButtons.style.display = 'none';
+        startButton.style.display = 'block';
+        currentIndex = -1;
+      }
+
+      // 코드 스니펫 렌더링 함수
       function renderCode(index) {
         const language = languages[index];
         const code = codeSnippets[language];
-        const highlightedCode = hljs.highlight(code, { language: language }).value;
-        contentDiv.innerHTML = `<h2>${capitalizeFirstLetter(getLanguageName(language))}</h2><pre><code>${highlightedCode}</code></pre>`;
-        prevButton.style.display = 'block';
+        contentDiv.innerHTML = `<h2>${capitalizeFirstLetter(getLanguageName(language))}</h2><pre><code class="language-${language}"></code></pre>`;
+        const codeElement = contentDiv.querySelector('code');
+        codeElement.textContent = code; // 안전하게 코드 삽입
+        hljs.highlightElement(codeElement); // Highlight.js를 사용하여 하이라이팅 적용
       }
 
-      // "Next" button click event
-      nextButton.addEventListener('click', () => {
-        currentIndex++;
-        if (currentIndex >= languages.length) {
-          currentIndex = 0;
-          renderHome();
-        } else {
-          renderCode(currentIndex);
-        }
-      });
-
-      // "Previous" button click event
-      prevButton.addEventListener('click', () => {
-        currentIndex--;
-        if (currentIndex < 0) {
-          currentIndex = languages.length - 1;
-        }
-        renderCode(currentIndex);
-      });
-
-      // Function to capitalize the first letter
+      // 첫 글자 대문자 변환 함수
       function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
       }
 
-      // Function to map language codes to display names
+      // 언어 코드에서 표시 이름으로 변환 함수
       function getLanguageName(lang) {
         const languageNames = {
           "x86asm": "Assembly",
           "csharp": "C#",
           "cpp": "C++",
           "fsharp": "F#"
-          // Add other mappings if necessary
+          // 필요에 따라 다른 매핑 추가
         };
         return languageNames[lang] || lang;
       }
