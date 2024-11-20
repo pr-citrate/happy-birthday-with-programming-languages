@@ -9,7 +9,10 @@
 
   <!-- Highlight.js CSS: Atom One Light Theme -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-light.min.css">
-
+  
+  <!-- Devicon CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+  
   <style>
     /* Reset default styles */
     * {
@@ -58,6 +61,15 @@
     h2 {
       font-size: 2rem;
       margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    /* Language Logo Styles */
+    .language-logo {
+      font-size: 40px;
     }
 
     /* Navigation buttons styles */
@@ -158,6 +170,15 @@
       .nav-buttons button, #startButton {
         width: 100%;
       }
+
+      h2 {
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .language-logo {
+        font-size: 30px;
+      }
     }
   </style>
 </head>
@@ -176,41 +197,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 
   <!-- Individual language support scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/scala.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/fsharp.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/x86asm.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/d.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/ada.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/elixir.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/haskell.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/php.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/ocaml.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/java.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/perl.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/ruby.min.js"></script>
+  <!-- 필요한 언어의 Highlight.js 스크립트를 추가하세요 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/javascript.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/typescript.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/bash.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/basic.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/dart.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/arduino.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/fortran.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/csharp.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/r.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/cpp.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/lua.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/sql.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/clojure.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+  <!-- 다른 언어들도 추가하세요 -->
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       // 코드 스니펫 정의
       const codeSnippets = {
         "rust": `fn main() {
-  println!("Happy birthday!");
+    println!("Happy birthday!");
 }`,
         "scala": `object Main extends App {
   println("Happy birthday!")
@@ -218,21 +215,21 @@
         "fsharp": `open System
 printfn "Happy birthday!"`,
         "x86asm": `.LC0:
-.string "Happy birthday!"
+    .string "Happy birthday!"
 main:
-  endbr64
-  pushq %rbp
-  movq %rsp, %rbp
-  leaq .LC0(%rip), %rax
-  movq %rax, %rdi
-  movl $0, %eax
-  call printf@PLT
-  movl $0, %eax
-  popq %rbp
-  ret`,
+    endbr64
+    pushq %rbp
+    movq %rsp, %rbp
+    leaq .LC0(%rip), %rax
+    movq %rax, %rdi
+    movl $0, %eax
+    call printf@PLT
+    movl $0, %eax
+    popq %rbp
+    ret`,
         "d": `import std;
 void main() {
-  writeln("Happy birthday!");
+    writeln("Happy birthday!");
 }`,
         "ada": `with Ada.Text_IO; use Ada.Text_IO;
 procedure Hello is
@@ -244,11 +241,11 @@ end Hello;`,
         "php": `<?php
 echo "Happy birthday!";
 ?>`,
-        "ocaml": `print_string "Happy birthday!"`,
+        "ocaml": `print_string "Happy birthday!";`,
         "java": `public class Main {
-  public static void main(String[] args) {
-    System.out.println("Happy birthday!");
-  }
+    public static void main(String[] args) {
+        System.out.println("Happy birthday!");
+    }
 }`,
         "python": `print("Happy birthday!")`,
         "perl": `print "Happy birthday!";`,
@@ -258,32 +255,32 @@ echo "Happy birthday!";
         "bash": `echo "Happy birthday!"`,
         "basic": `PRINT "Happy birthday!"`,
         "dart": `void main() {
-  print("Happy birthday");
+    print("Happy birthday");
 }`,
         "arduino": `void setup() {
-  Serial.begin(9600);
-  Serial.println("Happy birthday!");
+    Serial.begin(9600);
+    Serial.println("Happy birthday!");
 } 
 void loop() {}`,
         "fortran": `program main
-  write(*,*) "Happy birthday!"
+    write(*,*) "Happy birthday!"
 end program main`,
         "csharp": `using System;
 namespace HappyBirthday
 {
-  class Congratulate
-  {
-    private static void Main()
+    class Congratulate
     {
-      Console.WriteLine("Happy birthday!");
+        private static void Main()
+        {
+            Console.WriteLine("Happy birthday!");
+        }
     }
-  }
 }`,
         "r": `cat("Happy birthday!\\n")`,
         "go": `package main
 import "fmt"
 func main() {
-  fmt.Println("Happy Birthday!")
+    fmt.Println("Happy Birthday!")
 }`,
         "cpp": `#include <iostream>
 using namespace std;
@@ -294,6 +291,38 @@ int main() {
         "lua": `print("Happy birthday!")`,
         "sql": `INSERT INTO table_name (column1) VALUES ("Happy birthday");`,
         "clojure": `(println "Happy birthday!")`
+      };
+
+      // 언어별 아이콘 클래스 매핑 (Devicon 사용)
+      const languageIcons = {
+        "rust": "devicon-rust-plain",
+        "scala": "devicon-scala-plain",
+        "fsharp": "devicon-fsharp-plain",
+        "x86asm": "", // 아이콘 없음
+        "d": "devicon-d-plain",
+        "ada": "", // 아이콘 없음
+        "elixir": "devicon-elixir-plain",
+        "haskell": "devicon-haskell-plain",
+        "php": "devicon-php-plain",
+        "ocaml": "devicon-ocaml-plain",
+        "java": "devicon-java-plain",
+        "python": "devicon-python-plain",
+        "perl": "devicon-perl-plain",
+        "ruby": "devicon-ruby-plain",
+        "javascript": "devicon-javascript-plain",
+        "typescript": "devicon-typescript-plain",
+        "bash": "devicon-bash-plain",
+        "basic": "", // 아이콘 없음
+        "dart": "devicon-dart-plain",
+        "arduino": "devicon-arduino-plain",
+        "fortran": "", // 아이콘 없음
+        "csharp": "devicon-csharp-plain",
+        "r": "devicon-r-plain",
+        "go": "devicon-go-plain",
+        "cpp": "devicon-cplusplus-plain",
+        "lua": "devicon-lua-plain",
+        "sql": "", // 아이콘 없음
+        "clojure": "devicon-clojure-plain"
       };
 
       const languages = Object.keys(codeSnippets);
@@ -325,14 +354,16 @@ int main() {
 
       // 키보드 이벤트 리스너
       document.addEventListener('keydown', (event) => {
+        const key = event.key;
+
         if (currentIndex === -1) { // 홈 화면일 때
-          if (event.key === 'ArrowRight') { // 오른쪽 화살표 키
+          if (key === 'ArrowRight' || key === ' ') { // 오른쪽 화살표 키 또는 스페이스바
             startPresentation();
           }
         } else { // 코드 스니펫 화면일 때
-          if (event.key === 'ArrowLeft') { // 왼쪽 화살표 키
+          if (key === 'ArrowLeft') { // 왼쪽 화살표 키
             navigatePrevious();
-          } else if (event.key === 'ArrowRight') { // 오른쪽 화살표 키
+          } else if (key === 'ArrowRight' || key === ' ') { // 오른쪽 화살표 키 또는 스페이스바
             navigateNext();
           }
         }
@@ -376,7 +407,15 @@ int main() {
       function renderCode(index) {
         const language = languages[index];
         const code = codeSnippets[language];
-        contentDiv.innerHTML = `<h2>${capitalizeFirstLetter(getLanguageName(language))}</h2><pre><code class="language-${language}"></code></pre>`;
+        const languageName = capitalizeFirstLetter(getLanguageName(language));
+        const iconClass = languageIcons[language] || '';
+
+        // 언어 이름과 아이콘을 포함한 HTML 생성
+        const headerHTML = iconClass 
+          ? `<i class="${iconClass} language-logo"></i><span>${languageName}</span>`
+          : `<span>${languageName}</span>`;
+
+        contentDiv.innerHTML = `<h2>${headerHTML}</h2><pre><code class="language-${language}"></code></pre>`;
         const codeElement = contentDiv.querySelector('code');
         codeElement.textContent = code; // 안전하게 코드 삽입
         hljs.highlightElement(codeElement); // Highlight.js를 사용하여 하이라이팅 적용
@@ -394,7 +433,8 @@ int main() {
           "csharp": "C#",
           "cpp": "C++",
           "fsharp": "F#",
-          "sql": "SQL"
+          "sql": "SQL",
+          "php": "PHP"
         };
         return languageNames[lang] || lang;
       }
