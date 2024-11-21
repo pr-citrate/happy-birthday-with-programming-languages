@@ -4,16 +4,44 @@
   <meta charset="UTF-8">
   <title>Happy Birthday</title>
 
+  <link rel="icon" href="./favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="./favicon-32x32.png" type="image/png" sizes="32x32">
+  
   <!-- Google Fonts: Roboto -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
+  
   <!-- Highlight.js CSS: Atom One Light Theme -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-light.min.css">
   
   <!-- Devicon CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
   
+  <!-- Animate.css for animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  
+  <!-- Progress Bar CSS -->
   <style>
+    /* Progress Bar Styles */
+    #progressBarContainer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background-color: #e0e0e0;
+    }
+
+    #progressBar {
+      height: 100%;
+      width: 0%;
+      background-color: #007BFF;
+      transition: width 0.3s ease;
+    }
+
     /* Reset default styles */
     * {
       margin: 0;
@@ -30,21 +58,39 @@
       justify-content: center;
       align-items: center;
       padding: 20px;
+      position: relative;
+      overflow: hidden;
     }
 
     /* Container styles */
     .container {
       background: white;
-      padding: 40px 60px;
-      border-radius: 15px;
+      padding: 40px;
+      border-radius: 15px 15px 5px 5px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
       max-width: 800px;
+      min-height: 600px;
       width: 100%;
       text-align: center;
       transition: all 0.3s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
+      animation: fadeIn 0.5s;
+      overflow: hidden;
+      justify-content: center;
+    }
+
+    /* Language Page Logo Styles */
+    .language-page-logo {
+      display: flex;
+      position: absolute;
+      top: 50px;
+      left: 50px;
+      font-size: 30px;
+      color: #000; /* Black color */
+      z-index: 10;
     }
 
     /* Heading styles */
@@ -56,6 +102,8 @@
     h1 {
       font-size: 3rem;
       margin-bottom: 30px;
+      text-align: center;
+      animation: fadeInDown 1s;
     }
 
     h2 {
@@ -65,25 +113,34 @@
       align-items: center;
       gap: 10px;
       justify-content: center;
+      animation: fadeInUp 1s;
     }
 
     /* Language Logo Styles */
     .language-logo {
       font-size: 40px;
+      animation: bounceIn 1s;
+      color: #000; /* Black color */
     }
 
     /* Navigation buttons styles */
     .nav-buttons {
       margin-top: 30px;
-      display: none; /* Hidden initially */
       justify-content: center;
       gap: 20px;
+      display: flex;
+      position: absolute;
+      bottom: 50px;
+      opacity: 0;
+      animation: fadeInUp 1s forwards;
+      animation-delay: 0.5s;
     }
 
     .nav-buttons button {
       padding: 12px 30px;
       font-size: 1rem;
       font-weight: 700;
+      min-width: 8em;
       color: white;
       background-color: #007BFF;
       border: none;
@@ -91,6 +148,27 @@
       cursor: pointer;
       box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
       transition: background-color 0.3s ease, transform 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-buttons button::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300%;
+      height: 300%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: all 0.8s ease;
+      transform: translate(-50%, -50%) scale(0);
+      border-radius: 50%;
+    }
+
+    .nav-buttons button:hover::after {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0;
+      transition: all 0.8s ease;
     }
 
     .nav-buttons button:hover {
@@ -108,6 +186,7 @@
       padding: 12px 30px;
       font-size: 1rem;
       font-weight: 700;
+      min-width: 8em;
       color: white;
       background-color: #28a745;
       border: none;
@@ -115,7 +194,10 @@
       cursor: pointer;
       box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
       transition: background-color 0.3s ease, transform 0.2s ease;
-      margin-top: 20px; /* 추가 여백 */
+      margin-top: 20px; /* Additional margin */
+      opacity: 0;
+      animation: fadeInUp 1s forwards;
+      animation-delay: 0.5s;
     }
 
     #startButton:hover {
@@ -140,6 +222,11 @@
       transform: translateY(20px);
       animation: fadeInUp 0.5s forwards;
       width: 100%;
+      position: relative;
+    }
+
+    pre > code {
+      font-family: "JetBrains Mono", 'Courier New', Courier, monospace;
     }
 
     code {
@@ -147,18 +234,74 @@
       padding: 20px;
       font-size: 1rem;
       line-height: 1.5;
+      background: #f5f7fa;
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
     }
 
     /* Animation */
     @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes bounceIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.3);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+      70% {
+        transform: scale(0.9);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Last Page Styles */
+    #lastPage {
+      display: none; /* Hidden initially */
+      text-align: center;
+      animation: fadeIn 1s;
+    }
+
+    #lastPage h1 {
+      color: #333;
+      margin-top: 20px;
+      font-size: 2.5rem;
+      text-align: center;
+      animation: fadeInUp 1s;
+    }
+
     /* Responsive design */
-    @media (max-width: 600px) {
+    /* @media (max-width: 600px) {
       .container {
         padding: 20px 30px;
       }
@@ -179,35 +322,130 @@
       .language-logo {
         font-size: 30px;
       }
+
+      #lastPage h1 {
+        font-size: 2rem;
+      }
+
+      .language-page-logo {
+        font-size: 24px;
+        top: 10px;
+        left: 10px;
+      }
+    } */
+
+    /* Custom Icon Styles for Languages Without Devicon Support */
+    .custom-icon-x86asm::before,
+    .custom-icon-ada::before,
+    .custom-icon-d::before,
+    .custom-icon-basic::before,
+    .custom-icon-fortran::before,
+    .custom-icon-sql::before {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      content: "";
+    }
+
+    /* Specific Background Images for Each Custom Icon */
+    .custom-icon-x86asm::before {
+      background-image: url('./x86asm.png');
+    }
+
+    .custom-icon-ada::before {
+      background-image: url('./ada.png');
+    }
+
+    .custom-icon-d::before {
+      background-image: url('./d.png');
+    }
+
+    .custom-icon-basic::before {
+      background-image: url('./basic.png');
+    }
+
+    .custom-icon-fortran::before {
+      background-image: url('./fortran.png');
+    }
+
+    .custom-icon-sql::before {
+      background-image: url('./sql.png');
     }
   </style>
 </head>
 <body>
 
   <div class="container" id="contentContainer">
+    <!-- Add language page logo -->
+    <div class="language-page-logo">
+      <!-- Icons change dynamically based on the current language -->
+    </div>
+    
     <div id="content"></div>
+    
+    <!-- Add last page (remove image) -->
+    <div id="lastPage">
+      <h1>지영님의 생일을 축하합니다!</h1>
+    </div>
+    
     <button id="startButton">Start</button>
     <div class="nav-buttons">
       <button id="prevButton">Previous</button>
       <button id="nextButton">Next</button>
     </div>
+    <!-- Progress Bar -->
+    <div id="progressBarContainer">
+      <div id="progressBar"></div>
+    </div>
+    
   </div>
 
   <!-- Highlight.js JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-
+  
   <!-- Individual language support scripts -->
-  <!-- 필요한 언어의 Highlight.js 스크립트를 추가하세요 -->
+  <!-- Add Highlight.js scripts for necessary languages -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/javascript.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
-  <!-- 다른 언어들도 추가하세요 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/scala.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/fsharp.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/x86asm.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/d.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/ada.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/elixir.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/haskell.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/php.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/ocaml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/java.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/perl.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/ruby.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/typescript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/bash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/basic.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/dart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/arduino.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/fortran.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/csharp.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/r.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/cpp.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/lua.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/sql.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/clojure.min.js"></script>
+  
+  <!-- Confetti.js for confetti effect -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // 코드 스니펫 정의
+      // Define code snippets
       const codeSnippets = {
         "rust": `fn main() {
-    println!("Happy birthday!");
+  println!("Happy birthday!");
 }`,
         "scala": `object Main extends App {
   println("Happy birthday!")
@@ -238,9 +476,9 @@ begin
 end Hello;`,
         "elixir": `IO.puts "Happy birthday!"`,
         "haskell": `main = putStrLn "Happy birthday!"`,
-        "php": `<?php
+        "php": `&lt;?php
 echo "Happy birthday!";
-?>`,
+?&gt;`,
         "ocaml": `print_string "Happy birthday!";`,
         "java": `public class Main {
     public static void main(String[] args) {
@@ -255,7 +493,7 @@ echo "Happy birthday!";
         "bash": `echo "Happy birthday!"`,
         "basic": `PRINT "Happy birthday!"`,
         "dart": `void main() {
-    print("Happy birthday");
+    print("Happy birthday!");
 }`,
         "arduino": `void setup() {
     Serial.begin(9600);
@@ -276,31 +514,31 @@ namespace HappyBirthday
         }
     }
 }`,
-        "r": `cat("Happy birthday!\\n")`,
+        "r": `cat("Happy birthday!")`,
         "go": `package main
 import "fmt"
 func main() {
-    fmt.Println("Happy Birthday!")
+    fmt.Println("Happy birthday!")
 }`,
-        "cpp": `#include <iostream>
+        "cpp": `#include &lt;iostream&gt;
 using namespace std;
 int main() {
-  cout << "Happy birthday!" << endl;
-  return 0;
+    cout &lt;&lt; &quot;Happy birthday!&quot; &lt;&lt; endl;
+    return 0;
 }`,
         "lua": `print("Happy birthday!")`,
-        "sql": `INSERT INTO table_name (column1) VALUES ("Happy birthday");`,
+        "sql": `INSERT INTO table_name (column1) VALUES ("Happy birthday!");`,
         "clojure": `(println "Happy birthday!")`
       };
 
-      // 언어별 아이콘 클래스 매핑 (Devicon 사용)
+      // Mapping language to icon classes (using Devicon and custom classes)
       const languageIcons = {
         "rust": "devicon-rust-plain",
         "scala": "devicon-scala-plain",
         "fsharp": "devicon-fsharp-plain",
-        "x86asm": "", // 아이콘 없음
-        "d": "devicon-d-plain",
-        "ada": "", // 아이콘 없음
+        "x86asm": "custom-icon-x86asm", // No icon
+        "d": "custom-icon-d", // No icon
+        "ada": "custom-icon-ada", // No icon
         "elixir": "devicon-elixir-plain",
         "haskell": "devicon-haskell-plain",
         "php": "devicon-php-plain",
@@ -312,121 +550,178 @@ int main() {
         "javascript": "devicon-javascript-plain",
         "typescript": "devicon-typescript-plain",
         "bash": "devicon-bash-plain",
-        "basic": "", // 아이콘 없음
+        "basic": "custom-icon-basic", // No icon
         "dart": "devicon-dart-plain",
         "arduino": "devicon-arduino-plain",
-        "fortran": "", // 아이콘 없음
+        "fortran": "custom-icon-fortran", // No icon
         "csharp": "devicon-csharp-plain",
         "r": "devicon-r-plain",
         "go": "devicon-go-plain",
         "cpp": "devicon-cplusplus-plain",
         "lua": "devicon-lua-plain",
-        "sql": "", // 아이콘 없음
+        "sql": "custom-icon-sql", // No icon
         "clojure": "devicon-clojure-plain"
       };
 
       const languages = Object.keys(codeSnippets);
-      let currentIndex = -1; // -1은 홈 화면을 나타냄
+      let currentIndex = -1; // -1 represents the home screen
 
       const contentDiv = document.getElementById('content');
+      const lastPage = document.getElementById('lastPage');
       const startButton = document.getElementById('startButton');
       const navButtons = document.querySelector('.nav-buttons');
       const prevButton = document.getElementById('prevButton');
       const nextButton = document.getElementById('nextButton');
+      const progressBar = document.getElementById('progressBar');
+      const languagePageLogo = document.querySelector('.language-page-logo');
 
-      // 초기 화면 렌더링
+      // Initial render
       renderHome();
 
-      // Start 버튼 클릭 이벤트
+      // Start button click event
       startButton.addEventListener('click', () => {
         startPresentation();
       });
 
-      // Previous 버튼 클릭 이벤트
+      // Previous button click event
       prevButton.addEventListener('click', () => {
         navigatePrevious();
       });
 
-      // Next 버튼 클릭 이벤트
+      // Next button click event
       nextButton.addEventListener('click', () => {
         navigateNext();
       });
 
-      // 키보드 이벤트 리스너
+      // Keyboard event listener
       document.addEventListener('keydown', (event) => {
         const key = event.key;
 
-        if (currentIndex === -1) { // 홈 화면일 때
-          if (key === 'ArrowRight' || key === ' ') { // 오른쪽 화살표 키 또는 스페이스바
+        if (event.repeat) return; // Prevent auto-repeat
+
+        if (currentIndex === -1) { // On home screen
+          if (key === 'ArrowRight' || key === ' ') { // Right arrow or spacebar
+            event.preventDefault();
             startPresentation();
           }
-        } else { // 코드 스니펫 화면일 때
-          if (key === 'ArrowLeft') { // 왼쪽 화살표 키
+        } else if (currentIndex < languages.length) { // On code snippet screen
+          if (key === 'ArrowLeft') { // Left arrow
+            event.preventDefault();
             navigatePrevious();
-          } else if (key === 'ArrowRight' || key === ' ') { // 오른쪽 화살표 키 또는 스페이스바
+          } else if (key === 'ArrowRight' || key === ' ') { // Right arrow or spacebar
+            event.preventDefault();
             navigateNext();
           }
         }
       });
 
-      // 프레젠테이션 시작 함수
+      // Start presentation function
       function startPresentation() {
         startButton.style.display = 'none';
         navButtons.style.display = 'flex';
         currentIndex = 0;
         renderCode(currentIndex);
+        updateProgressBar();
       }
 
-      // 다음 코드 스니펫으로 이동 (순환)
+      // Navigate to next code snippet
       function navigateNext() {
         currentIndex++;
-        if (currentIndex >= languages.length) {
-          currentIndex = 0; // 첫 번째 코드 스니펫으로 순환
+        if (currentIndex < languages.length) {
+          renderCode(currentIndex);
+          updateProgressBar();
+        } else if (currentIndex === languages.length) {
+          showLastPage();
+          updateProgressBar();
+        } else {
+          // Cycle back to first code snippet
+          currentIndex = 0;
+          renderCode(currentIndex);
+          updateProgressBar();
         }
-        renderCode(currentIndex);
       }
 
-      // 이전 코드 스니펫으로 이동 (순환)
+      // Navigate to previous code snippet
       function navigatePrevious() {
-        currentIndex--;
-        if (currentIndex < 0) {
-          currentIndex = languages.length - 1; // 마지막 코드 스니펫으로 순환
+        if (currentIndex === languages.length) {
+          // From last page, go back to last code snippet
+          hideLastPage();
+          currentIndex = languages.length - 1;
+          renderCode(currentIndex);
+          updateProgressBar();
+        } else if (currentIndex > 0) {
+          currentIndex--;
+          renderCode(currentIndex);
+          updateProgressBar();
+        } else if (currentIndex === 0) {
+          // From first code snippet, go back to home screen
+          renderHome();
+          updateProgressBar();
+        } else {
+          // Other cases, cycle to last code snippet
+          currentIndex = languages.length - 1;
+          renderCode(currentIndex);
+          updateProgressBar();
         }
-        renderCode(currentIndex);
       }
 
-      // 홈 화면 렌더링 함수
+      // Show last page
+      function showLastPage() {
+        contentDiv.style.display = 'none';
+        lastPage.style.display = 'block';
+        navButtons.style.display = 'none';
+        languagePageLogo.innerHTML = ''; // Remove language logo on last page
+        startConfetti();
+      }
+
+      // Hide last page
+      function hideLastPage() {
+        lastPage.style.display = 'none';
+        contentDiv.style.display = 'block';
+        navButtons.style.display = 'flex';
+        // No need to stop confetti
+      }
+
+      // Render home screen
       function renderHome() {
-        contentDiv.innerHTML = '<h1>Happy Birthday 🎉</h1>';
+        contentDiv.style.display = 'block';
+        lastPage.style.display = 'none';
+        contentDiv.innerHTML = '<h1 class="animate__animated animate__fadeIn">Happy Birthday 🎉</h1>';
         navButtons.style.display = 'none';
         startButton.style.display = 'block';
         currentIndex = -1;
+        updateProgressBar();
+        languagePageLogo.innerHTML = ''; // Remove language logo on home screen
       }
 
-      // 코드 스니펫 렌더링 함수
+      // Render code snippet
       function renderCode(index) {
         const language = languages[index];
         const code = codeSnippets[language];
         const languageName = capitalizeFirstLetter(getLanguageName(language));
         const iconClass = languageIcons[language] || '';
 
-        // 언어 이름과 아이콘을 포함한 HTML 생성
-        const headerHTML = iconClass 
-          ? `<i class="${iconClass} language-logo"></i><span>${languageName}</span>`
-          : `<span>${languageName}</span>`;
+        // Update language page logo
+        if (iconClass) {
+          languagePageLogo.innerHTML = `<i class="${iconClass} language-logo animate__animated animate__bounceIn"></i>`;
+        } else {
+          languagePageLogo.innerHTML = '';
+        }
 
-        contentDiv.innerHTML = `<h2>${headerHTML}</h2><pre><code class="language-${language}"></code></pre>`;
+        // Display language name only in header
+        const headerHTML = `<span>${languageName}</span>`;
+
+        contentDiv.innerHTML = `<h2>${headerHTML}</h2><pre><code class="language-${language}">${code}</code></pre>`;
         const codeElement = contentDiv.querySelector('code');
-        codeElement.textContent = code; // 안전하게 코드 삽입
-        hljs.highlightElement(codeElement); // Highlight.js를 사용하여 하이라이팅 적용
+        hljs.highlightElement(codeElement); // Apply highlighting using Highlight.js
       }
 
-      // 첫 글자 대문자 변환 함수
+      // Capitalize first letter
       function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
       }
 
-      // 언어 코드에서 표시 이름으로 변환 함수
+      // Convert language code to display name
       function getLanguageName(lang) {
         const languageNames = {
           "x86asm": "Assembly",
@@ -434,9 +729,83 @@ int main() {
           "cpp": "C++",
           "fsharp": "F#",
           "sql": "SQL",
-          "php": "PHP"
+          "php": "PHP",
+          "basic": "Basic"
         };
         return languageNames[lang] || lang;
+      }
+
+      // Update progress bar
+      function updateProgressBar() {
+        if (currentIndex === -1) {
+          progressBar.style.width = '0%';
+        } else if (currentIndex < languages.length) {
+          const percentage = ((currentIndex + 1) / (languages.length + 1)) * 100;
+          progressBar.style.width = `${percentage}%`;
+        } else {
+          progressBar.style.width = '100%';
+        }
+      }
+
+      // Start confetti effect (more festive)
+      function startConfetti() {
+        const duration = 5 * 1000; // 5 seconds
+        const animationEnd = Date.now() + duration;
+        const defaults = { 
+          startVelocity: 30, 
+          spread: 360, 
+          ticks: 60, 
+          zIndex: 1000 
+        };
+
+        function randomInRange(min, max) {
+          return Math.random() * (max - min) + min;
+        }
+
+        const colors = [
+          '#ff0a54', '#ff477e', '#ff7096', '#ff85a1', 
+          '#fbb1bd', '#f9bec7', '#c8e6c9', '#a5d6a7', 
+          '#81c784', '#66bb6a', '#4caf50', '#43a047', 
+          '#2196f3', '#64b5f6', '#bbdefb', '#90caf9', 
+          '#42a5f5', '#1e88e5', '#ffab00', '#ffc400', 
+          '#ffd600', '#ffeb3b', '#fff176', '#ffee58'
+        ];
+
+        const interval = setInterval(function() {
+          const timeLeft = animationEnd - Date.now();
+
+          if (timeLeft <= 0) {
+            return clearInterval(interval);
+          }
+
+          const particleCount = 200 * (timeLeft / duration);
+          confetti(Object.assign({}, defaults, { 
+            particleCount, 
+            colors: colors, 
+            origin: { y: randomInRange(0.6, 0.9), x: Math.random() } 
+          }));
+        }, 250);
+
+        // Additional particle effects
+        setTimeout(() => {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6, x: 0.1 },
+            colors: ['#ff0a54', '#ff477e', '#ff7096'],
+            shapes: ['circle', 'square']
+          });
+        }, 500);
+
+        setTimeout(() => {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6, x: 0.9 },
+            colors: ['#2196f3', '#64b5f6', '#bbdefb'],
+            shapes: ['circle', 'square']
+          });
+        }, 1000);
       }
     });
   </script>
